@@ -47,6 +47,24 @@
         </div>
       </div>
     </div>
+    <div class="thanks">
+      <div class="line"></div>
+      <div class="content">
+        <h3>感谢他们</h3>
+        <p>灵感+部分代码来源实验楼<a href="https://www.shiyanlou.com/user/8834/" target="_blank" class="highlight-name">ekCit</a> 的 <a target="_blank" href="https://www.shiyanlou.com/courses/599" class="highlight-name">高德API+Python解决租房问题</a> 课程，感谢他...</p>
+        <ul>
+          <li>
+            <img src="./../images/microsoft.png" alt="微软"/>
+          </li>
+          <li>
+            <img src="./../images/tencent.png" alt="腾讯"/>
+          </li>
+          <li>
+            <img src="./../images/aliyun.png" alt="阿里云"/>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -136,6 +154,49 @@
         color: #737b8a;
       }
       margin-bottom: 20px;
+    }
+  }
+  .thanks{
+    background: #fff;
+    .line{
+      border-bottom: 1px solid #eee;
+      margin: 20px 0;
+    }
+    .content{
+      max-width: 1200px;
+      margin: 40px auto 50px auto;
+      h3{
+        color: #2b3242;
+        font-size: 20px;
+        font-weight: 600;
+      }
+      p{
+        color: #737b8a;
+        font-size: 14px;
+        margin-bottom: 30px;
+      }
+      .highlight-name{
+        font-size: inherit;
+        font-weight: inherit;
+      }
+    }
+    ul{
+      display: flex;
+    }
+    li{
+      margin-right: 12px;
+      width: 135px;
+      border: 1px solid #E9E9E9;
+      transition: all 0.5s;
+      filter: grayscale(100%);
+      &:hover{
+        filter: grayscale(0%);
+        border-color: #737b8a;
+      }
+      img{
+        display: block;
+        max-width: 100%;
+      }
     }
   }
   .highlight-name{
