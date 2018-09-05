@@ -14,6 +14,9 @@
   ul,li{
     list-style: none;
   }
+  a{
+    text-decoration: none;
+  }
   body{
     font-weight: 400;
     line-height: 1.6;
