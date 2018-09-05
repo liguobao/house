@@ -92,6 +92,10 @@
     font-size: 21px;
     font-weight: 600;
     letter-spacing: 7px;
+    transition: all 0.5s;
+    &:hover{
+      color: #095f8a;
+    }
   }
   a {
     text-decoration: none;
