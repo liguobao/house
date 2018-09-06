@@ -10,13 +10,15 @@
       <div>
         <h3 class="sub-title">这是什么？</h3>
         <p class="text">
-          通过实时爬虫获取公开租房信息，直接在高德地图上直观展示房源位置+基础信息，同时提供住址到公司的路线计算（公交+地图 or 步行导航），已实现【豆瓣租房小组】、【Zuber合租平台】、【蘑菇租房】、【CCB建融家园】、【58同城品牌公寓】、【58同城诚信租房】、【上海互助租房】数据展示，部分房源价格支持筛选功能。
+          通过实时爬虫获取公开租房信息，直接在高德地图上直观展示房源位置+基础信息，同时提供住址到公司的路线计算（公交+地图 or
+          步行导航），已实现【豆瓣租房小组】、【Zuber合租平台】、【蘑菇租房】、【CCB建融家园】、【58同城品牌公寓】、【58同城诚信租房】、【上海互助租房】数据展示，部分房源价格支持筛选功能。
         </p>
         <div class="cities">
           <div class="city-item" v-for="item in cities" :key="item.name">
             <a target="_blank" :href="mapUrl + `?cityname=${item.cityname}`" class="highlight-name">{{item.name}}</a>
             <div class="form" v-if="item.form && item.form.length">
-              <a target="_blank" :href="mapUrl + `?cityname=${item.cityname}&source=${where.source}`" class="highlight-name" v-for="(where,index) in item.form" :key="where.name">
+              <a target="_blank" :href="mapUrl + `?cityname=${item.cityname}&source=${where.source}`"
+                 class="highlight-name" v-for="(where,index) in item.form" :key="where.name">
                 {{where.name}}
                 <template v-if="index < item.form.length - 1">、</template>
               </a>
@@ -51,7 +53,9 @@
       <div class="line"></div>
       <div class="content">
         <h3>感谢他们</h3>
-        <p>灵感+部分代码来源实验楼<a href="https://www.shiyanlou.com/user/8834/" target="_blank" class="highlight-name">ekCit</a> 的 <a target="_blank" href="https://www.shiyanlou.com/courses/599" class="highlight-name">高德API+Python解决租房问题</a> 课程，感谢他...</p>
+        <p>灵感+部分代码来源实验楼<a href="https://www.shiyanlou.com/user/8834/" target="_blank" class="highlight-name">ekCit</a> 的
+          <a target="_blank" href="https://www.shiyanlou.com/courses/599" class="highlight-name">高德API+Python解决租房问题</a>
+          课程，感谢他...</p>
         <ul>
           <li>
             <img src="./../images/microsoft.png" alt="微软"/>
@@ -65,14 +69,56 @@
         </ul>
       </div>
     </div>
+    <div class="contact">
+      <div>
+        <p>联系我？试试下面的方式咯。</p>
+        <div class="ways">
+          <div>
+            <span >知乎: </span>
+            <a href="https://www.zhihu.com/people/codelover" class="highlight-name" target="_blank">李国宝</a>
+          </div>
+          <div>
+            <span>GitHub: </span>
+            <a href="https://github.com/liguobao/58HouseSearch" class="highlight-name" target="_blank">58HouseSearch</a>
+          </div>
+          <div>
+            <span>邮件: </span><em>codelover@qq.com</em>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div>
+        <div>
+          Copyright 2016 - 2018 www.woyaozufang.live. All Rights Reserved
+          <a href="http://www.miitbeian.gov.cn/" class="highlight-name" target="_blank">粤ICP备18055424号</a>
+          <a href="https://www.woyaozufang.live/" class="highlight-name" target="_blank">地图搜租房</a>
+        </div>
+        <div class="call-me">
+          <el-tooltip class="item" effect="dark" content="88888888" placement="top">
+            <i class="iconfont icon-icon highlight-name"></i>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" content="138-0000-0000" placement="top">
+            <i class="iconfont icon-dianhua highlight-name"></i>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" content="138-0000-0000" placement="top">
+            <i class="iconfont icon-changyonglogo28 highlight-name"></i>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" content="codelover@qq.com" placement="top">
+            <i class="iconfont icon-jianzhuanquan- highlight-name"></i>
+          </el-tooltip>
+        </div>
+      </div>
+    </footer>
   </div>
 </template>
 <style lang="scss" scoped>
-  .home{
+  .home {
     min-height: 120vh;
     position: relative;
   }
-  .header{
+
+  .header {
     position: absolute;
     top: 45px;
     left: 50%;
@@ -80,7 +126,8 @@
     width: 1200px;
     transform: translateX(-50%);
   }
-  .banner{
+
+  .banner {
     background: url("./../images/banner1.jpg") no-repeat;
     background-position: center;
     background-size: cover;
@@ -91,218 +138,283 @@
     justify-content: center;
     color: #fff;
     font-weight: 400;
-    .slogan{
+    .slogan {
       font-size: 40px;
       font-weight: inherit;
     }
-    .sub-slogan{
+    .sub-slogan {
       font-weight: inherit;
       font-size: 30px;
     }
-    .start{
+    .start {
       margin-top: 20px;
       background: #d22e3e;
       border-color: #d22e3e;
       transition: all 0.3s;
-      &:hover{
+      &:hover {
         background: #ba1f2e;
         border-color: #ba1f2e;
       }
     }
   }
-  .introduction{
+
+  .introduction {
     padding: 40px 20px;
     background: #1a1f2a;
     color: #fff;
-    >div{
-     max-width: 1200px;
-     margin: auto;
+    > div {
+      max-width: 1200px;
+      margin: auto;
     }
-    .sub-title{
+    .sub-title {
       margin-top: 40px;
       font-size: 20px;
       font-weight: 600;
     }
-    .text{
+    .text {
       margin-bottom: 20px;
       color: #737b8a;
       font-size: 14px;
     }
-    .cities{
+    .cities {
       display: flex;
       margin-bottom: 32px;
-      .city-item{
+      .city-item {
         flex: auto;
-        &.search{
+        &.search {
           width: 184px;
         }
-        p{
+        p {
           font-size: 14px;
           color: #737b8a;
         }
       }
-      .form{
-        .highlight-name{
+      .form {
+        .highlight-name {
           font-size: 14px;
           font-weight: 400;
         }
       }
     }
-    .new-douban{
-      p{
+    .new-douban {
+      p {
         font-size: 14px;
         color: #737b8a;
       }
       margin-bottom: 20px;
     }
   }
-  .thanks{
+
+  .thanks {
     background: #fff;
-    .line{
+    .line {
       border-bottom: 1px solid #eee;
       margin: 20px 0;
     }
-    .content{
+    .content {
       max-width: 1200px;
       margin: 40px auto 50px auto;
-      h3{
+      h3 {
         color: #2b3242;
         font-size: 20px;
         font-weight: 600;
       }
-      p{
+      p {
         color: #737b8a;
         font-size: 14px;
         margin-bottom: 30px;
       }
-      .highlight-name{
+      .highlight-name {
         font-size: inherit;
         font-weight: inherit;
       }
     }
-    ul{
+    ul {
       display: flex;
     }
-    li{
+    li {
       margin-right: 12px;
       width: 135px;
       border: 1px solid #E9E9E9;
       transition: all 0.5s;
       filter: grayscale(100%);
-      &:hover{
+      &:hover {
         filter: grayscale(0%);
         border-color: #737b8a;
       }
-      img{
+      img {
         display: block;
         max-width: 100%;
       }
     }
   }
-  .highlight-name{
+
+  .highlight-name {
     color: #0e90d2;
     font-size: 20px;
     font-weight: 600;
     transition: all 0.3s;
-    &:hover{
+    &:hover {
       color: #095f8a;
+    }
+  }
+
+  .contact {
+    padding: 40px 0 140px 0;
+    background: #1a1f2a;
+    color: #fff;
+    > div {
+      max-width: 1200px;
+      margin: 40px auto 0 auto;
+      p {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+      .ways {
+        display: flex;
+        align-items: baseline;
+        > div:not(:last-of-type) {
+          margin-right: 200px;
+        }
+        span,em
+        {
+          font-weight: normal;
+          font-style: normal;
+          font-size: 16px;
+        }
+        a{
+          font-size: 16px;
+          font-weight: 400;
+        }
+        a,em{
+          margin-left: 5px;
+        }
+      }
+    }
+
+  }
+  footer{
+    padding: 30px 0;
+    background: #0d121b;
+    font-size: 12px;
+    color: #555d6d;
+    >div{
+      margin: 0 auto;
+      max-width: 1200px;
+      display: flex;
+      justify-content: space-between;
+      .highlight-name{
+        font-size: 12px;
+        margin-right: 5px;
+      }
+      .call-me{
+        i{
+          cursor: pointer;
+        }
+        .highlight-name{
+          font-size: 14px;
+          margin: 0 2px;
+        }
+      }
     }
   }
 </style>
 <script>
-import Header from './../components/header'
-export default {
-  name: 'home',
-  components: {
+  import Header from './../components/header'
+
+  export default {
+    name: 'home',
+    components: {
       Header
-  },
-  data() {
-    return {
-      cities: [
-        {
-          name: '上海地区',
-          url: '',
-          cityname: '上海',
-          form: [
-            {
-              name: '互助租房',
-              url: '',
-              source:'huzhuzufang'
-            },
-            {
-              name: '豆瓣',
-              url: '',
-              source:'douban'
-            },
-            {
-              name: 'Zuber',
-              url: '',
-              source:'zuber'
-            },
-          ]
-        },
-        {
-          name: '北京地区',
-          url: '',
-          cityname: '北京',
-          form: [
-            {
-              name: '豆瓣',
-              url: '',
-              source:'douban'
-            },
-            {
-              name: 'Zuber',
-              url: '',
-              source:'zuber'
-            },
-            {
-              name: '蘑菇',
-              url: '',
-              source:'mogu'
-            },
-          ]
-        },
-        {
-          name: '广州地区',
-          url: '',
-          cityname: '广州',
-          form: [
-            {
-              name: '豆瓣',
-              url: '',
-              source:'douban'
-            },
-            {
-              name: 'Zuber',
-              url: '',
-              source:'zuber'
-            },
-            {
-              name: '蘑菇',
-              url: '',
-              source:'mogu'
-            },
-          ]
-        },
-        {
-          name: '深圳地区',
-          url: '',
-          cityname: '深圳',
-          form: [
-            {
-              name: '豆瓣',
-              url: 'douban'
-            },
-            {
-              name: 'Zuber',
-              url: 'zuber'
-            },
-          ]
-        }
-      ],
-      mapUrl: `https://www.woyaozufang.live/Home/HouseList`
+    },
+    data() {
+      return {
+        cities: [
+          {
+            name: '上海地区',
+            url: '',
+            cityname: '上海',
+            form: [
+              {
+                name: '互助租房',
+                url: '',
+                source: 'huzhuzufang'
+              },
+              {
+                name: '豆瓣',
+                url: '',
+                source: 'douban'
+              },
+              {
+                name: 'Zuber',
+                url: '',
+                source: 'zuber'
+              },
+            ]
+          },
+          {
+            name: '北京地区',
+            url: '',
+            cityname: '北京',
+            form: [
+              {
+                name: '豆瓣',
+                url: '',
+                source: 'douban'
+              },
+              {
+                name: 'Zuber',
+                url: '',
+                source: 'zuber'
+              },
+              {
+                name: '蘑菇',
+                url: '',
+                source: 'mogu'
+              },
+            ]
+          },
+          {
+            name: '广州地区',
+            url: '',
+            cityname: '广州',
+            form: [
+              {
+                name: '豆瓣',
+                url: '',
+                source: 'douban'
+              },
+              {
+                name: 'Zuber',
+                url: '',
+                source: 'zuber'
+              },
+              {
+                name: '蘑菇',
+                url: '',
+                source: 'mogu'
+              },
+            ]
+          },
+          {
+            name: '深圳地区',
+            url: '',
+            cityname: '深圳',
+            form: [
+              {
+                name: '豆瓣',
+                url: 'douban'
+              },
+              {
+                name: 'Zuber',
+                url: 'zuber'
+              },
+            ]
+          }
+        ],
+        mapUrl: `https://www.woyaozufang.live/Home/HouseList`
+      }
     }
   }
-}
 </script>
