@@ -1,102 +1,113 @@
 <template>
   <div class="header">
-    <router-link to="/" class="title">房子是租来的,而生活不是。</router-link>
-    <nav>
-      <ul>
-        <li>
-          <router-link class="nav-item" to="/">网站首页</router-link>
-        </li>
-        <li>
-          <el-dropdown>
+    <div>
+      <router-link to="/" class="title">房子是租来的,而生活不是。</router-link>
+      <nav>
+        <ul>
+          <li>
+            <router-link class="nav-item" to="/">网站首页</router-link>
+          </li>
+          <li>
+            <el-dropdown>
             <span class="el-dropdown-link nav-item">
               热门城市<i class="el-icon-caret-bottom"></i>
             </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item v-for="item in cities" :key="item">
-                <a :href="`https://www.woyaozufang.live/Home/HouseList?cityname=${item}`" target="_blank" class="link-to">{{item}}</a>
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </li>
-        <li>
-          <el-dropdown>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item v-for="item in cities" :key="item">
+                  <a :href="`https://www.woyaozufang.live/Home/HouseList?cityname=${item}`" target="_blank"
+                     class="link-to">{{item}}</a>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </li>
+          <li>
+            <el-dropdown>
             <span class="el-dropdown-link nav-item">
               个人中心<i class="el-icon-caret-bottom"></i>
             </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item ><a href="javascript:" class="link-to">QQ登录</a></el-dropdown-item>
-              <el-dropdown-item ><a href="javascript:" class="link-to">邮箱登录</a></el-dropdown-item>
-              <el-dropdown-item ><a href="javascript:" class="link-to">注册账号</a></el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </li>
-        <li>
-          <el-dropdown>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item><a href="javascript:" class="link-to">QQ登录</a></el-dropdown-item>
+                <el-dropdown-item><a href="javascript:" class="link-to">邮箱登录</a></el-dropdown-item>
+                <el-dropdown-item><a href="javascript:" class="link-to">注册账号</a></el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </li>
+          <li>
+            <el-dropdown>
             <span class="el-dropdown-link nav-item">
               使用说明<i class="el-icon-caret-bottom"></i>
             </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item v-for="item in instructions" :key="item.url">
-                <a :href="item.url" target="_blank" class="link-to">{{item.name}}</a>
-              </el-dropdown-item>
-              <el-dropdown-item ><a href="javascript:" class="link-to">联系我？</a></el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </li>
-      </ul>
-    </nav>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item v-for="item in instructions" :key="item.url">
+                  <a :href="item.url" target="_blank" class="link-to">{{item.name}}</a>
+                </el-dropdown-item>
+                <el-dropdown-item><a href="javascript:" class="link-to">联系我？</a></el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </li>
+        </ul>
+      </nav>
+    </div>
   </div>
 </template>
 <style lang="scss" scoped>
   .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+    padding: 0 22px;
+    > div {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      width: 1200px;
+      margin: auto;
+    }
   }
 
   nav {
     margin-right: 60px;
     > ul {
       display: flex;
-      >li:not(:last-of-type){
+      > li:not(:last-of-type) {
         margin-right: 5px;
       }
-      .nav-item{
+      .nav-item {
         color: #fff;
         font-size: 16px;
         padding: 6px 16px;
         cursor: pointer;
         transition: all 0.3s;
-        .el-icon-caret-bottom{
+        .el-icon-caret-bottom {
           transition: all 0.3s;
         }
-        &:hover{
+        &:hover {
           background: #ba1f2e;
           border-radius: 2px;
         }
-        &:hover .el-icon-caret-bottom{
+        &:hover .el-icon-caret-bottom {
           transform: rotate(180deg);
         }
       }
     }
   }
-  .link-to{
+
+  .link-to {
     color: #333;
     display: block;
-    &:hover{
+    &:hover {
       color: #409EFF;
     }
   }
+
   .title {
     color: #0e90d2;
     font-size: 21px;
     font-weight: 600;
     letter-spacing: 7px;
     transition: all 0.5s;
-    &:hover{
+    &:hover {
       color: #095f8a;
     }
   }
+
   a {
     text-decoration: none;
   }
@@ -105,8 +116,8 @@
   export default {
     data() {
       return {
-        cities: ['上海','北京','广州','深圳','杭州','南京','武汉','成都','厦门','苏州'],
-        instructions:[
+        cities: ['上海', '北京', '广州', '深圳', '杭州', '南京', '武汉', '成都', '厦门', '苏州'],
+        instructions: [
           {
             name: '使用教程',
             url: 'https://github.com/liguobao/58HouseSearch/blob/master/%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B.md'

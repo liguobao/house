@@ -1,12 +1,12 @@
 <template>
   <div class="home">
-    <Header class="header"></Header>
-    <div class="banner">
+    <Header class="header" ref="header" :class="{sticky: sticky}"></Header>
+    <div class="banner ">
       <h2 class="slogan">满大街找租房心力交瘁？试试换个方式直接在地图上搜租房吧。</h2>
       <p class="sub-slogan">房源爬虫 + 高德地图强力驱动,帮助你迅速找到合适房源</p>
-      <el-button type="danger" class="start">马上开始！</el-button>
+      <el-button type="danger" class="start" @click="scrollTo">马上开始！</el-button>
     </div>
-    <div class="introduction">
+    <div class="introduction " ref="introduction">
       <div>
         <h3 class="sub-title">这是什么？</h3>
         <p class="text">
@@ -43,13 +43,13 @@
             <p>支持关键字 + 信息来源 + 发布日期组合搜索</p>
           </div>
         </div>
-        <div class="new-douban">
+        <div class="new-douban running">
           <a href="" class="highlight-name">新增豆瓣租房小组</a>
           <p>你在的城市没有数据？没有对应的租房小组数据？试试手动添加爬虫任务吧！（如：厦门租房小组 https://www.douban.com/group/XMhouse/）</p>
         </div>
       </div>
     </div>
-    <div class="thanks">
+    <div class="thanks ">
       <div class="line"></div>
       <div class="content">
         <h3>感谢他们</h3>
@@ -69,12 +69,12 @@
         </ul>
       </div>
     </div>
-    <div class="contact">
+    <div class="contact ">
       <div>
         <p>联系我？试试下面的方式咯。</p>
         <div class="ways">
           <div>
-            <span >知乎: </span>
+            <span>知乎: </span>
             <a href="https://www.zhihu.com/people/codelover" class="highlight-name" target="_blank">李国宝</a>
           </div>
           <div>
@@ -113,18 +113,67 @@
   </div>
 </template>
 <style lang="scss" scoped>
+  @keyframes right2left {
+    0% {
+      opacity: 0;
+      transform: translateX(-100%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes left2right {
+    0% {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes toUp {
+    0% {
+      opacity: 0;
+      transform: translateY(50%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes toDown {
+    0% {
+      opacity: 0;
+      transform: translateY(-60%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   .home {
     min-height: 120vh;
     position: relative;
   }
 
   .header {
-    position: absolute;
-    top: 45px;
-    left: 50%;
-    padding: 0 22px;
-    width: 1200px;
-    transform: translateX(-50%);
+    position: fixed;
+    top: 25px;
+    left: 0;
+    width: 100%;
+    padding: 20px 0;
+    transition: all 0.4s;
+    &.sticky {
+      top: 0;
+      opacity: 0.95;
+      background: #1a1f2a;
+    }
   }
 
   .banner {
@@ -138,6 +187,17 @@
     justify-content: center;
     color: #fff;
     font-weight: 400;
+    &.running {
+      .slogan {
+        animation: right2left 0.5s ease-out both;
+      }
+      .sub-slogan {
+        animation: left2right 0.5s ease-out both;
+      }
+      .start {
+        animation: toUp 0.5s 0.2s ease-out both;
+      }
+    }
     .slogan {
       font-size: 40px;
       font-weight: inherit;
@@ -145,6 +205,7 @@
     .sub-slogan {
       font-weight: inherit;
       font-size: 30px;
+
     }
     .start {
       margin-top: 20px;
@@ -162,6 +223,19 @@
     padding: 40px 20px;
     background: #1a1f2a;
     color: #fff;
+    &.running {
+      .sub-title {
+        animation: toUp 0.5s ease-out both;
+      }
+      .text {
+        animation: toUp 0.5s 0.1s ease-out both;
+      }
+      @for $i from 1 to 7 {
+        .city-item:nth-of-type(#{$i}) {
+          animation: toUp 0.5s (0.1s*$i) ease-out both;
+        }
+      }
+    }
     > div {
       max-width: 1200px;
       margin: auto;
@@ -197,6 +271,9 @@
       }
     }
     .new-douban {
+      &.running {
+        animation: toDown 0.5s ease-out both;
+      }
       p {
         font-size: 14px;
         color: #737b8a;
@@ -207,6 +284,19 @@
 
   .thanks {
     background: #fff;
+    &.running {
+      h3 {
+        animation: toUp 0.5s ease-out both;
+      }
+      p {
+        animation: toUp 0.5s 0.1s ease-out both;
+      }
+      @for $i from 1 to 4 {
+        li:nth-of-type(#{$i}) {
+          animation: toUp 0.5s (0.1s*$i) ease-out both;
+        }
+      }
+    }
     .line {
       border-bottom: 1px solid #eee;
       margin: 20px 0;
@@ -263,6 +353,18 @@
     padding: 40px 0 140px 0;
     background: #1a1f2a;
     color: #fff;
+    &.running {
+      p {
+        animation: toUp 0.5s ease-out both;
+      }
+      .ways {
+        @for $i from 1 to 4 {
+          div:nth-of-type(#{$i}) {
+            animation: toUp 0.5s (0.1s*$i) ease-out both;
+          }
+        }
+      }
+    }
     > div {
       max-width: 1200px;
       margin: 40px auto 0 auto;
@@ -277,42 +379,42 @@
         > div:not(:last-of-type) {
           margin-right: 200px;
         }
-        span,em
-        {
+        span, em {
           font-weight: normal;
           font-style: normal;
           font-size: 16px;
         }
-        a{
+        a {
           font-size: 16px;
           font-weight: 400;
         }
-        a,em{
+        a, em {
           margin-left: 5px;
         }
       }
     }
 
   }
-  footer{
+
+  footer {
     padding: 30px 0;
     background: #0d121b;
     font-size: 12px;
     color: #555d6d;
-    >div{
+    > div {
       margin: 0 auto;
       max-width: 1200px;
       display: flex;
       justify-content: space-between;
-      .highlight-name{
+      .highlight-name {
         font-size: 12px;
         margin-right: 5px;
       }
-      .call-me{
-        i{
+      .call-me {
+        i {
           cursor: pointer;
         }
-        .highlight-name{
+        .highlight-name {
           font-size: 14px;
           margin: 0 2px;
         }
@@ -328,6 +430,7 @@
     components: {
       Header
     },
+    computed: {},
     data() {
       return {
         cities: [
@@ -413,8 +516,48 @@
             ]
           }
         ],
-        mapUrl: `https://www.woyaozufang.live/Home/HouseList`
+        mapUrl: `https://www.woyaozufang.live/Home/HouseList`,
+        sticky: false,
+        elements: []
       }
+    },
+    methods: {
+      scroll() {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+        let offsetTop = this.$refs.header.$el.offsetTop;
+        this.sticky = scrollTop > (offsetTop);
+      },
+      scrollTo() {
+        this.$refs.introduction.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+          inline: 'center'
+        });
+      },
+      animation() {
+        //滚动条高度+视窗高度 = 可见区域底部高度
+        let visibleBottom = window.scrollY + document.documentElement.clientHeight;
+        //可见区域顶部高度
+        let visibleTop = window.scrollY;
+
+        for (let i = 0; i < this.elements.length; i++) {
+          let centerY = this.elements[i].offsetTop + (this.elements[i].offsetHeight / 2);
+          if (centerY > visibleTop && centerY < visibleBottom) {
+            this.elements[i].classList.add('running');
+          } else {
+            this.elements[i].classList.remove('running');
+          }
+        }
+
+      }
+    },
+    mounted() {
+      document.addEventListener('scroll', () => {
+        this.scroll();
+        this.animation();
+      });
+      this.elements = [document.querySelector('.banner'),document.querySelector('.introduction'),document.querySelector('.thanks'),document.querySelector('.contact')];
+      this.animation();
     }
   }
 </script>
