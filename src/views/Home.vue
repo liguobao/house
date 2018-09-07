@@ -169,6 +169,7 @@
     width: 100%;
     padding: 20px 0;
     transition: all 0.4s;
+    z-index: 99;
     &.sticky {
       top: 0;
       opacity: 0.95;
