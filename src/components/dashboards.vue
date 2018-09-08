@@ -4,7 +4,7 @@
       <li v-for="item in cities">
         <a target="_blank" :href="`https://www.woyaozufang.live/Home/HouseList?cityname=${item.cityName}`" :title="item.cityName" class="title highlight">{{item.cityName}}</a>
         <div class="source-wrap">
-          <a target="_blank" :href="`https://www.woyaozufang.live/Home/HouseList?cityname=${item.cityName}&source=${source.source}&intervalDay=14&houseCount=600`" class="highlight" v-for="source in item.source" :title="source.displaySource">
+          <a target="_blank" :href="`https://www.woyaozufang.live/Home/HouseList?cityname=${item.cityName}&source=${source.source}&intervalDay=14&houseCount=600`" class="highlight" v-for="source in item.sources" :title="source.displaySource">
             {{source.displaySource}}
             <template v-if="source.houseSum < 9999">
               ({{source.houseSum}})
@@ -64,19 +64,19 @@
       async getData() {
         const res = await this.$ajax.get('/houses/dashboard');
         const data = res.data;
-        let cities = {};
-        data.forEach(item => {
-          if(!cities[item.cityName]) {
-            cities[item.cityName] = {
-              cityName: item.cityName
-            }
-          }
-          if(!cities[item.cityName].source) {
-            cities[item.cityName].source = []
-          }
-          cities[item.cityName].source.push(item)
-        });
-        this.cities = cities;
+        // let cities = {};
+        // data.forEach(item => {
+        //   if(!cities[item.cityName]) {
+        //     cities[item.cityName] = {
+        //       cityName: item.cityName
+        //     }
+        //   }
+        //   if(!cities[item.cityName].source) {
+        //     cities[item.cityName].source = []
+        //   }
+        //   cities[item.cityName].source.push(item)
+        // });
+        this.cities = data;
       }
     },
     created() {
