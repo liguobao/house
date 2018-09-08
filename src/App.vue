@@ -30,4 +30,39 @@
     url('//at.alicdn.com/t/font_826486_ns6jc4zbuh.ttf') format('truetype'),
     url('//at.alicdn.com/t/font_826486_ns6jc4zbuh.svg#iconfont') format('svg');
   }
+  .ellipsis{
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .text-center{
+    text-align: center;
+  }
+  .text-left{
+    text-align: left;
+  }
+  .text-right{
+    text-align: right;
+  }
+  ::-webkit-scrollbar-track-piece {
+    background-color: #f8f8f8;
+  }
+
+  ::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #dddddd;
+    background-clip: padding-box;
+    min-height: 28px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #bbb;
+  }
 </style>
+

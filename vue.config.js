@@ -1,3 +1,6 @@
 module.exports = {
-  baseUrl: './'
+  baseUrl: './',
+  devServer: {
+    proxy: 'https://house-map.cn/'
+  }
 }

@@ -25,7 +25,7 @@
             </div>
           </div>
           <div class="city-item">
-            <a target="_blank" href="javascript:;" class="highlight-name">更多城市</a>
+            <a target="_blank" href="javascript:;" class="highlight-name"  @click="toggleDialog('dashboardsVisible',true)">更多城市</a>
             <div class="form">
               <a target="_blank" :href="mapUrl + `?cityname=成都`" class="highlight-name">
                 成都、
@@ -39,12 +39,12 @@
             </div>
           </div>
           <div class="city-item search">
-            <a target="_blank" href="javascript:;" class="highlight-name">高级搜索</a>
+            <a target="_blank" href="javascript:;" class="highlight-name" @click="toggleDialog('searchVisible',true)">高级搜索</a>
             <p>支持关键字 + 信息来源 + 发布日期组合搜索</p>
           </div>
         </div>
         <div class="new-douban running">
-          <a href="" class="highlight-name">新增豆瓣租房小组</a>
+          <a href="javascript:;" class="highlight-name">新增豆瓣租房小组</a>
           <p>你在的城市没有数据？没有对应的租房小组数据？试试手动添加爬虫任务吧！（如：厦门租房小组 https://www.douban.com/group/XMhouse/）</p>
         </div>
       </div>
@@ -110,6 +110,30 @@
         </div>
       </div>
     </footer>
+
+    <search-dialog :visible="searchVisible" @close="toggleDialog"></search-dialog>
+
+    <el-dialog
+        title="全部城市"
+        width="70%"
+        center
+        top="50px"
+        :visible="dashboardsVisible"
+        :before-close="() => {toggleDialog('dashboardsVisible')}"
+    >
+      <dashboards></dashboards>
+    </el-dialog>
+
+    <el-dialog
+        title="新增豆瓣租房小组"
+        width="400px"
+        center
+        :visible="doubanAddVisible"
+        :before-close="() => {toggleDialog('doubanAddVisible')}"
+    >
+      <douban-add></douban-add>
+    </el-dialog>
+
   </div>
 </template>
 <style lang="scss" scoped>
@@ -424,12 +448,18 @@
   }
 </style>
 <script>
-  import Header from './../components/header'
+  import Header from './../components/header';
+  import SearchDialog from '../components/search-dialog';
+  import dashboards from './../components/dashboards';
+  import doubanAdd from './../components/douban-add'
 
   export default {
     name: 'home',
     components: {
-      Header
+      Header,
+      SearchDialog,
+      dashboards,
+      doubanAdd
     },
     computed: {},
     data() {
@@ -519,10 +549,16 @@
         ],
         mapUrl: `https://www.woyaozufang.live/Home/HouseList`,
         sticky: false,
-        elements: []
+        elements: [],
+        searchVisible: false,
+        dashboardsVisible: false,
+        doubanAddVisible: false
       }
     },
     methods: {
+      toggleDialog(key, val) {
+        this[key] = val || false;
+      },
       scroll() {
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
         let offsetTop = this.$refs.header.$el.offsetTop;
@@ -552,13 +588,14 @@
 
       }
     },
-    mounted() {
+    async mounted() {
       document.addEventListener('scroll', () => {
         this.scroll();
         this.animation();
       });
-      this.elements = [document.querySelector('.banner'),document.querySelector('.introduction'),document.querySelector('.thanks'),document.querySelector('.contact')];
+      this.elements = [document.querySelector('.banner'), document.querySelector('.introduction'), document.querySelector('.thanks'), document.querySelector('.contact')];
       this.animation();
+
     }
   }
 </script>
