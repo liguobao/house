@@ -16,7 +16,8 @@ const $ajax = axios.create({
 $ajax.interceptors.request.use(
   config => {
     if(localStorage.token) {
-      config.headers.token = localStorage.getItem('token')
+      config.headers.token = localStorage.getItem('token');
+      console.log(config)
     }
     return config;
   }

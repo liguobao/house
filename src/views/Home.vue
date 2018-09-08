@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <Header class="header" ref="header" :class="{sticky: sticky}" :toggle-dialog="toggleDialog"></Header>
+    <Header class="header" ref="header" :class="{sticky: sticky}" :toggle-dialog="toggleDialog" :get-user-house-list="getUserHouseList" :show-dashboards="showDashboards"></Header>
     <div class="banner ">
       <h2 class="slogan">满大街找租房心力交瘁？试试换个方式直接在地图上搜租房吧。</h2>
       <p class="sub-slogan">房源爬虫 + 高德地图强力驱动,帮助你迅速找到合适房源</p>
@@ -25,7 +25,7 @@
             </div>
           </div>
           <div class="city-item">
-            <a target="_blank" href="javascript:;" class="highlight-name"  @click="toggleDialog('dashboardsVisible',true)">更多城市</a>
+            <a target="_blank" href="javascript:;" class="highlight-name"  @click="showDashboards('all')">更多城市</a>
             <div class="form">
               <a target="_blank" :href="mapUrl + `?cityname=成都`" class="highlight-name">
                 成都、
@@ -114,14 +114,14 @@
     <search-dialog :visible="searchVisible" @close="toggleDialog"></search-dialog>
 
     <el-dialog
-        title="全部城市"
+        :title="userSource ? '房源列表' : '全部城市'"
         width="70%"
         center
         top="50px"
         :visible="dashboardsVisible"
         :before-close="() => {toggleDialog('dashboardsVisible')}"
     >
-      <dashboards></dashboards>
+      <dashboards :type="dashboardsType"></dashboards>
     </el-dialog>
 
     <el-dialog
@@ -142,6 +142,18 @@
         :before-close="() => {toggleDialog('loginVisible')}"
     >
       <login @close="toggleDialog" :login-type="loginType"></login>
+    </el-dialog>
+
+    <el-dialog
+        top="50px"
+        width="70%"
+        title="房源列表"
+        :visible.sync="userHouseVisible"
+        append-to-body
+        center
+        :before-close="() => {toggleDialog('userHouseVisible')}"
+    >
+      <house-search-list type="user" @close="toggleDialog" :house-list="userHouseList"></house-search-list>
     </el-dialog>
 
   </div>
@@ -463,6 +475,7 @@
   import dashboards from './../components/dashboards';
   import doubanAdd from './../components/douban-add';
   import login from './../components/login'
+  import houseSearchList from './../components/house-search-list'
 
   export default {
     name: 'home',
@@ -471,7 +484,8 @@
       SearchDialog,
       dashboards,
       doubanAdd,
-      login
+      login,
+      houseSearchList
     },
     data() {
       return {
@@ -565,10 +579,24 @@
         dashboardsVisible: false,
         doubanAddVisible: false,
         loginVisible: false,
-        loginType: undefined
+        loginType: undefined,
+        userHouseList: [],
+        userHouseVisible: false,
+        userSource: false,
+        dashboardsType: 'all'
       }
     },
     methods: {
+      showDashboards(type) {
+        this.dashboardsType = type;
+        this.toggleDialog('dashboardsVisible',true)
+      },
+      async getUserHouseList() {
+        const userId = this.$store.state.userInfo.id;
+        const data = await this.$ajax.get(`/users/${userId}/collections`);
+        this.userHouseList = data.data;
+        this.userHouseVisible = true;
+      },
       async getUserInfo() {
         const u = localStorage.getItem('u');
         if(!u) {
@@ -623,7 +651,7 @@
       }
     },
     async created() {
-      this.getUserInfo()
+      this.getUserInfo();
     },
     async mounted() {
       document.addEventListener('scroll', () => {

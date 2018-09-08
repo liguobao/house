@@ -14,7 +14,7 @@
         append-to-body
         center
     >
-      <house-search-list :house-list="houseList"></house-search-list>
+      <house-search-list type="all" :house-list="houseList"></house-search-list>
     </el-dialog>
     <el-form ref="form" :model="form" label-width="130px" class="form" :rules="rules">
       <el-form-item label="地区" prop="cityName">

@@ -142,7 +142,7 @@
           return {
             userName: [
               {required: true, message: this.type === 'login' ? '请输入账号' : '请输入昵称', trigger: 'change'},
-              {min: 2, max: 14, message: '长度在 2 到 14 个字符', trigger: 'change'}
+              {min: 2,  message: '至少2个字符', trigger: 'change'}
             ],
             email: [
               {required: true, message: '请输入邮箱地址', trigger: 'blur'},

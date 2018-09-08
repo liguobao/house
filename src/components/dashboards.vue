@@ -2,9 +2,12 @@
   <div class="dashboards">
     <ul v-if="cities">
       <li v-for="item in cities">
-        <a target="_blank" :href="`https://www.woyaozufang.live/Home/HouseList?cityname=${item.cityName}`" :title="item.cityName" class="title highlight">{{item.cityName}}</a>
+        <a target="_blank" :href="`https://www.woyaozufang.live/Home/HouseList?cityname=${item.cityName}`"
+           :title="item.cityName" class="title highlight">{{item.cityName}}</a>
         <div class="source-wrap">
-          <a target="_blank" :href="`https://www.woyaozufang.live/Home/HouseList?cityname=${item.cityName}&source=${source.source}&intervalDay=14&houseCount=600`" class="highlight" v-for="source in item.sources" :title="source.displaySource">
+          <a target="_blank"
+             :href="`https://www.woyaozufang.live/Home/HouseList?cityname=${item.cityName}&source=${source.source}&intervalDay=14&houseCount=600`"
+             class="highlight" v-for="source in item.sources" :title="source.displaySource">
             {{source.displaySource}}
             <template v-if="source.houseSum < 9999">
               ({{source.houseSum}})
@@ -20,34 +23,39 @@
   </div>
 </template>
 <style lang="scss" scoped>
-  .dashboards{
+  .dashboards {
     max-height: 720px;
     overflow: auto;
   }
-  ul{
+
+  ul {
     display: flex;
     flex-wrap: wrap;
   }
-  li{
+
+  li {
     width: 150px;
     text-align: center;
     margin-bottom: 20px;
   }
-  .highlight{
+
+  .highlight {
     color: #409EFF;
     transition: all 0.3s;
-    &:hover{
+    &:hover {
       color: #095f8a;
     }
   }
-  .title{
+
+  .title {
     font-size: 20px;
     font-weight: 600;
     display: block;
     margin-bottom: 10px;
   }
-  .source-wrap{
-    a{
+
+  .source-wrap {
+    a {
       display: block;
       line-height: 1.8;
     }
@@ -55,6 +63,11 @@
 </style>
 <script>
   export default {
+    props: {
+      type: {
+        default: 'all'
+      }
+    },
     data() {
       return {
         cities: undefined
@@ -62,21 +75,17 @@
     },
     methods: {
       async getData() {
-        const res = await this.$ajax.get('/houses/dashboard');
-        const data = res.data;
-        // let cities = {};
-        // data.forEach(item => {
-        //   if(!cities[item.cityName]) {
-        //     cities[item.cityName] = {
-        //       cityName: item.cityName
-        //     }
-        //   }
-        //   if(!cities[item.cityName].source) {
-        //     cities[item.cityName].source = []
-        //   }
-        //   cities[item.cityName].source.push(item)
-        // });
-        this.cities = data;
+        if(this.type === 'all') {
+          const res = await this.$ajax.get('/houses/dashboard');
+          const data = res.data;
+          this.cities = data;
+        }else {
+          const userId = this.$store.state.userInfo.id;
+          const res = await this.$ajax.get(`/users/${userId}/collections/dashboard`);
+          const data = res.data;
+          this.cities = data;
+        }
+
       }
     },
     created() {

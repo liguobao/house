@@ -27,14 +27,14 @@
             </span>
               <el-dropdown-menu slot="dropdown">
                 <template v-if="user">
-                  <el-dropdown-item><a href="javascript:" class="link-to">房源看板</a></el-dropdown-item>
-                  <el-dropdown-item><a href="javascript:" class="link-to">收藏列表</a></el-dropdown-item>
-                  <el-dropdown-item><a href="javascript:" class="link-to">绑定QQ</a></el-dropdown-item>
-                  <el-dropdown-item><a href="javascript:" class="link-to">设置地址</a></el-dropdown-item>
+                  <el-dropdown-item><a href="javascript:" class="link-to" @click="showDashboards('user')">房源看板</a></el-dropdown-item>
+                  <el-dropdown-item><a href="javascript:" class="link-to" @click="getUserHouseList">收藏列表</a></el-dropdown-item>
+                  <el-dropdown-item disabled><a href="javascript:" class="link-to">绑定QQ</a></el-dropdown-item>
+                  <el-dropdown-item><a href="javascript:" class="link-to" @click="setAddress">设置地址</a></el-dropdown-item>
                   <el-dropdown-item><a href="javascript:" class="link-to" @click="logOut">退出登录</a></el-dropdown-item>
                 </template>
                 <template v-else>
-                  <el-dropdown-item><a href="javascript:" class="link-to">QQ登录</a></el-dropdown-item>
+                  <el-dropdown-item disabled><a href="javascript:" class="link-to">QQ登录</a></el-dropdown-item>
                   <el-dropdown-item><a href="javascript:" class="link-to"
                                        @click="toggleDialog('loginVisible',true,'login')">邮箱登录</a></el-dropdown-item>
                   <el-dropdown-item><a href="javascript:" class="link-to"
@@ -100,6 +100,12 @@
     }
   }
 
+  .is-disabled {
+    .link-to {
+      color: #bbb;
+    }
+  }
+
   .link-to {
     color: #333;
     display: block;
@@ -126,7 +132,9 @@
 <script>
   export default {
     props: {
-      toggleDialog: {}
+      toggleDialog: {},
+      getUserHouseList: {},
+      showDashboards: {}
     },
     computed: {
       user() {
@@ -136,6 +144,18 @@
     methods: {
       logOut() {
         this.$store.dispatch('UserLogout');
+      },
+      setAddress() {
+        this.$prompt('', '设置上班地址', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputValidator: /\S/,
+          inputErrorMessage: '不能为空'
+        }).then(({ value }) => {
+          console.log(value)
+        }).catch(() => {
+
+        });
       }
     },
     data() {

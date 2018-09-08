@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-table
-        :data="houseList"
+        :data="list"
         border
         v-loading="loading"
         max-height="800"
@@ -89,11 +89,15 @@
           prop="displaySource"
           label="来源">
       </el-table-column>
-      <!--<el-table-column-->
-      <!--width="120"-->
-      <!--align="center"-->
-      <!--label="操作">-->
-      <!--</el-table-column>-->
+      <el-table-column
+          v-if="type === 'user'"
+          width="120"
+          align="center"
+          label="操作">
+        <template slot-scope="scope">
+          <el-button type="danger" size="small" @click="del(scope.row,scope.$index)" :loading="loading">删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
   </div>
 </template>
@@ -141,6 +145,9 @@
 <script>
   export default {
     props: {
+      type: {
+        default: 'all'
+      },
       houseList: {
         default: () => {
           return []
@@ -150,9 +157,18 @@
     data() {
       return {
         imagesLoadingMap: {},
-        loading: false
+        loading: false,
+        list: this.houseList
       }
     },
-    methods: {}
+    methods: {
+      async del(row,index) {
+        this.loading = true;
+        const userId = this.$store.state.userInfo.id;
+        const data = await this.$ajax.delete(`/users/${userId}/collections/${row.id}`);
+        this.list.splice(index,1);
+        this.loading = false;
+      }
+    }
   }
 </script>
