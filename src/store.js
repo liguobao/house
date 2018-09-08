@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     token: localStorage.getItem('token'),
     userInfo: localStorage.getItem('u') ? JSON.parse(localStorage.getItem('u')) : undefined,
+    fullscreenLoading: false
   },
   mutations: {
     LOGIN: (state, data) => {
@@ -23,21 +24,27 @@ export default new Vuex.Store({
       window.localStorage.removeItem('token');
       window.localStorage.removeItem('u');
     },
-    UPDATEUSERINFO: (state,data) => {
+    UPDATEUSERINFO: (state, data) => {
       // 更新用户信息
       state.userInfo = data;
       window.localStorage.setItem('u', JSON.stringify(data));
     },
+    UPDATEFULLSCREENLOADING: (state, data) => {
+      state.fullscreenLoading = data;
+    }
   },
   actions: {
-    UserLogin({ commit }, data){
+    UserLogin({commit}, data) {
       commit('LOGIN', data);
     },
-    UserLogout({ commit }){
+    UserLogout({commit}) {
       commit('LOGOUT');
     },
-    UpdateUserInfo({commit},data) {
-      commit('UPDATEUSERINFO',data);
+    UpdateUserInfo({commit}, data) {
+      commit('UPDATEUSERINFO', data);
+    },
+    UpdateFullscreenLoading({commit}, data) {
+      commit('UPDATEFULLSCREENLOADING', data);
     }
   }
 })

@@ -52,7 +52,7 @@
                 <el-dropdown-item v-for="item in instructions" :key="item.url">
                   <a :href="item.url" target="_blank" class="link-to">{{item.name}}</a>
                 </el-dropdown-item>
-                <el-dropdown-item><a href="javascript:" class="link-to">联系我？</a></el-dropdown-item>
+                <el-dropdown-item><a href="javascript:" class="link-to" @click="scrollTo('contact')">联系我？</a></el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </li>
@@ -134,7 +134,8 @@
     props: {
       toggleDialog: {},
       getUserHouseList: {},
-      showDashboards: {}
+      showDashboards: {},
+      scrollTo: {}
     },
     computed: {
       user() {

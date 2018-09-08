@@ -165,7 +165,7 @@
       async del(row,index) {
         this.loading = true;
         const userId = this.$store.state.userInfo.id;
-        const data = await this.$ajax.delete(`/users/${userId}/collections/${row.id}`);
+        await this.$ajax.delete(`/users/${userId}/collections/${row.id}`);
         this.list.splice(index,1);
         this.loading = false;
       }

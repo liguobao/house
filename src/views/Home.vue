@@ -1,10 +1,21 @@
 <template>
-  <div class="home">
-    <Header class="header" ref="header" :class="{sticky: sticky}" :toggle-dialog="toggleDialog" :get-user-house-list="getUserHouseList" :show-dashboards="showDashboards"></Header>
+  <div class="home"
+       v-loading.fullscreen.lock="fullscreenLoading"
+  >
+    <Header
+        class="header"
+        ref="header" :class="{sticky: sticky}"
+        :toggle-dialog="toggleDialog"
+        :get-user-house-list="getUserHouseList"
+        :show-dashboards="showDashboards"
+        :scroll-to="scrollTo"
+    >
+
+    </Header>
     <div class="banner ">
       <h2 class="slogan">满大街找租房心力交瘁？试试换个方式直接在地图上搜租房吧。</h2>
       <p class="sub-slogan">房源爬虫 + 高德地图强力驱动,帮助你迅速找到合适房源</p>
-      <el-button type="danger" class="start" @click="scrollTo">马上开始！</el-button>
+      <el-button type="danger" class="start" @click="scrollTo('introduction')">马上开始！</el-button>
     </div>
     <div class="introduction " ref="introduction">
       <div>
@@ -25,7 +36,7 @@
             </div>
           </div>
           <div class="city-item">
-            <a target="_blank" href="javascript:;" class="highlight-name"  @click="showDashboards('all')">更多城市</a>
+            <a target="_blank" href="javascript:;" class="highlight-name" @click="showDashboards('all')">更多城市</a>
             <div class="form">
               <a target="_blank" :href="mapUrl + `?cityname=成都`" class="highlight-name">
                 成都、
@@ -69,7 +80,7 @@
         </ul>
       </div>
     </div>
-    <div class="contact ">
+    <div class="contact " ref="contact">
       <div>
         <p>联系我？试试下面的方式咯。</p>
         <div class="ways">
@@ -487,6 +498,11 @@
       login,
       houseSearchList
     },
+    computed: {
+      fullscreenLoading() {
+        return this.$store.state.fullscreenLoading
+      }
+    },
     data() {
       return {
         cities: [
@@ -589,33 +605,35 @@
     methods: {
       showDashboards(type) {
         this.dashboardsType = type;
-        this.toggleDialog('dashboardsVisible',true)
+        this.toggleDialog('dashboardsVisible', true)
       },
       async getUserHouseList() {
+        this.$store.dispatch('UpdateFullscreenLoading', true);
         const userId = this.$store.state.userInfo.id;
         const data = await this.$ajax.get(`/users/${userId}/collections`);
         this.userHouseList = data.data;
         this.userHouseVisible = true;
+        this.$store.dispatch('UpdateFullscreenLoading', false);
       },
       async getUserInfo() {
         const u = localStorage.getItem('u');
-        if(!u) {
+        if (!u) {
           this.$store.dispatch('UserLogout');
-        }else {
+        } else {
           try {
             const userId = JSON.parse(u).id;
             const data = await this.$ajax.get(`/users/${userId}`);
-            this.$store.dispatch('UpdateUserInfo',data.data);
+            this.$store.dispatch('UpdateUserInfo', data.data);
           } catch (e) {
             this.$store.dispatch('UserLogout');
           }
         }
       },
-      toggleDialog(key, val,type) {
-        if(key === 'loginVisible') {
-          if(type) {
+      toggleDialog(key, val, type) {
+        if (key === 'loginVisible') {
+          if (type) {
             this.loginType = type;
-          }else {
+          } else {
             this.loginType = undefined;
           }
         }
@@ -626,8 +644,8 @@
         let offsetTop = this.$refs.header.$el.offsetTop;
         this.sticky = scrollTop > (offsetTop);
       },
-      scrollTo() {
-        this.$refs.introduction.scrollIntoView({
+      scrollTo(el) {
+        this.$refs[el].scrollIntoView({
           behavior: 'smooth',
           block: 'start',
           inline: 'center'
