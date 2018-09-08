@@ -26,9 +26,20 @@
               个人中心<i class="el-icon-caret-bottom"></i>
             </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item><a href="javascript:" class="link-to">QQ登录</a></el-dropdown-item>
-                <el-dropdown-item><a href="javascript:" class="link-to">邮箱登录</a></el-dropdown-item>
-                <el-dropdown-item><a href="javascript:" class="link-to">注册账号</a></el-dropdown-item>
+                <template v-if="user">
+                  <el-dropdown-item><a href="javascript:" class="link-to">房源看板</a></el-dropdown-item>
+                  <el-dropdown-item><a href="javascript:" class="link-to">收藏列表</a></el-dropdown-item>
+                  <el-dropdown-item><a href="javascript:" class="link-to">绑定QQ</a></el-dropdown-item>
+                  <el-dropdown-item><a href="javascript:" class="link-to">设置地址</a></el-dropdown-item>
+                  <el-dropdown-item><a href="javascript:" class="link-to" @click="logOut">退出登录</a></el-dropdown-item>
+                </template>
+                <template v-else>
+                  <el-dropdown-item><a href="javascript:" class="link-to">QQ登录</a></el-dropdown-item>
+                  <el-dropdown-item><a href="javascript:" class="link-to"
+                                       @click="toggleDialog('loginVisible',true,'login')">邮箱登录</a></el-dropdown-item>
+                  <el-dropdown-item><a href="javascript:" class="link-to"
+                                       @click="toggleDialog('loginVisible',true,'register')">注册账号</a></el-dropdown-item>
+                </template>
               </el-dropdown-menu>
             </el-dropdown>
           </li>
@@ -114,6 +125,19 @@
 </style>
 <script>
   export default {
+    props: {
+      toggleDialog: {}
+    },
+    computed: {
+      user() {
+        return !!this.$store.state.userInfo
+      }
+    },
+    methods: {
+      logOut() {
+        this.$store.dispatch('UserLogout');
+      }
+    },
     data() {
       return {
         cities: ['上海', '北京', '广州', '深圳', '杭州', '南京', '武汉', '成都', '厦门', '苏州'],

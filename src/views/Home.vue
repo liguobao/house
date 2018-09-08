@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <Header class="header" ref="header" :class="{sticky: sticky}"></Header>
+    <Header class="header" ref="header" :class="{sticky: sticky}" :toggle-dialog="toggleDialog"></Header>
     <div class="banner ">
       <h2 class="slogan">满大街找租房心力交瘁？试试换个方式直接在地图上搜租房吧。</h2>
       <p class="sub-slogan">房源爬虫 + 高德地图强力驱动,帮助你迅速找到合适房源</p>
@@ -44,7 +44,7 @@
           </div>
         </div>
         <div class="new-douban running">
-          <a href="javascript:;" class="highlight-name">新增豆瓣租房小组</a>
+          <a href="javascript:;" class="highlight-name" @click="toggleDialog('doubanAddVisible',true)">新增豆瓣租房小组</a>
           <p>你在的城市没有数据？没有对应的租房小组数据？试试手动添加爬虫任务吧！（如：厦门租房小组 https://www.douban.com/group/XMhouse/）</p>
         </div>
       </div>
@@ -132,6 +132,16 @@
         :before-close="() => {toggleDialog('doubanAddVisible')}"
     >
       <douban-add></douban-add>
+    </el-dialog>
+
+    <el-dialog
+        title="地图搜租房"
+        width="700px"
+        center
+        :visible="loginVisible"
+        :before-close="() => {toggleDialog('loginVisible')}"
+    >
+      <login @close="toggleDialog" :login-type="loginType"></login>
     </el-dialog>
 
   </div>
@@ -451,7 +461,8 @@
   import Header from './../components/header';
   import SearchDialog from '../components/search-dialog';
   import dashboards from './../components/dashboards';
-  import doubanAdd from './../components/douban-add'
+  import doubanAdd from './../components/douban-add';
+  import login from './../components/login'
 
   export default {
     name: 'home',
@@ -459,9 +470,9 @@
       Header,
       SearchDialog,
       dashboards,
-      doubanAdd
+      doubanAdd,
+      login
     },
-    computed: {},
     data() {
       return {
         cities: [
@@ -552,11 +563,34 @@
         elements: [],
         searchVisible: false,
         dashboardsVisible: false,
-        doubanAddVisible: false
+        doubanAddVisible: false,
+        loginVisible: false,
+        loginType: undefined
       }
     },
     methods: {
-      toggleDialog(key, val) {
+      async getUserInfo() {
+        const u = localStorage.getItem('u');
+        if(!u) {
+          this.$store.dispatch('UserLogout');
+        }else {
+          try {
+            const userId = JSON.parse(u).id;
+            const data = await this.$ajax.get(`/users/${userId}`);
+            this.$store.dispatch('UpdateUserInfo',data.data);
+          } catch (e) {
+            this.$store.dispatch('UserLogout');
+          }
+        }
+      },
+      toggleDialog(key, val,type) {
+        if(key === 'loginVisible') {
+          if(type) {
+            this.loginType = type;
+          }else {
+            this.loginType = undefined;
+          }
+        }
         this[key] = val || false;
       },
       scroll() {
@@ -587,6 +621,9 @@
         }
 
       }
+    },
+    async created() {
+      this.getUserInfo()
     },
     async mounted() {
       document.addEventListener('scroll', () => {
