@@ -121,7 +121,7 @@
         :visible="dashboardsVisible"
         :before-close="() => {toggleDialog('dashboardsVisible')}"
     >
-      <dashboards :type="dashboardsType"></dashboards>
+      <dashboards :type="dashboardsType" :key="dashboardsType"></dashboards>
     </el-dialog>
 
     <el-dialog

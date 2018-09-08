@@ -68,6 +68,11 @@
         default: 'all'
       }
     },
+    computed: {
+      dataType() {
+        return this.type
+      }
+    },
     data() {
       return {
         cities: undefined
@@ -75,7 +80,7 @@
     },
     methods: {
       async getData() {
-        if(this.type === 'all') {
+        if(this.dataType === 'all') {
           const res = await this.$ajax.get('/houses/dashboard');
           const data = res.data;
           this.cities = data;
