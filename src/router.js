@@ -17,7 +17,7 @@ const router = new Router({
       }
     },
     {
-      path: '/Web/CallBack',
+      path: '/user/callback',
       name: 'thirdPartyLogin',
       meta: {
         title: '第三方登录'

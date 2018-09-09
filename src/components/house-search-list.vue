@@ -175,9 +175,15 @@
           return []
         }
       },
+      page: {},
       getHousesList: {}
     },
     watch: {
+      page(n) {
+        if(n === 1) {
+          this.currentPage = 1;
+        }
+      },
       houseList(n) {
         if (n) {
           this.list = this.houseList
@@ -194,12 +200,16 @@
       }
     },
     methods: {
+      reset() {
+        this.currentPage = 1;
+        this.rowKeyArr = [];
+      },
       async currentChange(page) {
         this.loading = true;
-        const data = await this.getHousesList({
+        await this.getHousesList({
           ...this.options,
           page
-        });
+        },'change');
         this.loading = false;
       },
       cellClick(row, column, cell) {
@@ -227,7 +237,8 @@
         this.$message.success(data.message ? data.message : '删除成功')
       }
     },
-    destroyed() {
+    created() {
+
     }
   }
 </script>

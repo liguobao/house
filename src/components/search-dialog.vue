@@ -14,7 +14,7 @@
         append-to-body
         center
     >
-      <house-search-list type="all" :house-list="houseList" :options="form" :get-houses-list="getHousesList"></house-search-list>
+      <house-search-list type="all" :house-list="houseList" :options="form"  :page="currentPage" :get-houses-list="getHousesList" key="all" ref="search-list"></house-search-list>
     </el-dialog>
     <el-form ref="form" :model="form" :label-width="isMobile ? '0px' : '130px'" class="form" :rules="rules">
       <el-form-item  :label="isMobile ? '' : '地区'" prop="cityName">
@@ -114,6 +114,7 @@
           source: '',
           type: '0',
         },
+        currentPage: 1,
         searchRes: false,
         loading: false,
         rules: (() => {
@@ -178,6 +179,10 @@
       }
     },
     methods: {
+      closeSearchList() {
+        this.searchRes = false;
+        this.$refs['search-list'].reset();
+      },
       close() {
         this.$emit('close', 'searchVisible', false)
       },
@@ -192,7 +197,8 @@
             delete params.cityName;
             window.open(`https://www.woyaozufang.live/Home/HouseList?${this.$qs.stringify(params)}`);
           } else {
-           this.getHousesList(params)
+            this.currentPage = 1;
+            this.getHousesList(params)
           }
         } catch (e) {
           this.loading = false;
@@ -201,7 +207,7 @@
       async getHousesList(options,type) {
         const params = Object.assign({
           houseCount: 100,
-          page:1
+          page:this.currentPage
         }, options);
         if(!type) {
           this.loading = true;
@@ -214,6 +220,7 @@
           this.houseList = data.data;
           this.searchRes = true;
         }else {
+          this.currentPage = options.page;
           this.houseList = data.data;
         }
       },
