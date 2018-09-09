@@ -103,9 +103,8 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="pagination text-right" v-if="type === 'all'">
+    <div class="pagination text-right" v-if="type === 'all' && !loading">
       <el-pagination
-          background
           @current-change="currentChange"
           :current-page="currentPage"
           :page-size="100"
@@ -175,15 +174,9 @@
           return []
         }
       },
-      page: {},
       getHousesList: {}
     },
     watch: {
-      page(n) {
-        if(n === 1) {
-          this.currentPage = 1;
-        }
-      },
       houseList(n) {
         if (n) {
           this.list = this.houseList
@@ -211,6 +204,7 @@
           page
         },'change');
         this.loading = false;
+        this.currentPage = page;
       },
       cellClick(row, column, cell) {
         if (cell.cellIndex !== 2) {
