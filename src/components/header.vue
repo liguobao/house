@@ -146,14 +146,18 @@
       logOut() {
         this.$store.dispatch('UserLogout');
       },
-      setAddress() {
+      async setAddress() {
         this.$prompt('', '设置上班地址', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           inputValidator: /\S/,
           inputErrorMessage: '不能为空'
-        }).then(({ value }) => {
-          console.log(value)
+        }).then(async ({ value }) => {
+          const userId = this.$store.state.userInfo.id;
+          await this.$ajax.post(`/users/${userId}/address`, {
+            address: value
+          });
+          this.$message.success('保存成功')
         }).catch(() => {
 
         });
