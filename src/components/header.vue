@@ -102,7 +102,7 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
-      width: 1200px;
+      max-width: 1200px;
       margin: auto;
       position: relative;
     }
