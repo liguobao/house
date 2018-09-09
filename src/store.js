@@ -13,7 +13,7 @@ export default new Vuex.Store({
     LOGIN: (state, data) => {
       //更改token的值
       state.token = data.token;
-      state.token = data.data;
+      state.userInfo = data.data;
       window.localStorage.setItem('token', data.token);
       window.localStorage.setItem('u', JSON.stringify(data.data));
     },
