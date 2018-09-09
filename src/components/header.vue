@@ -24,11 +24,17 @@
             </el-dropdown>
           </li>
           <li>
-            <el-dropdown>
+            <el-dropdown class="dropdown">
             <span class="el-dropdown-link nav-item">
-              个人中心<i class="el-icon-caret-bottom"></i>
+              <template v-if="user">
+                {{$store.state.userInfo.userName}}
+              </template>
+              <template v-else>
+                个人中心
+              </template>
+              <i class="el-icon-caret-bottom"></i>
             </span>
-              <el-dropdown-menu slot="dropdown">
+              <el-dropdown-menu slot="dropdown" >
                 <template v-if="user">
                   <el-dropdown-item><a href="javascript:" class="link-to" @click="showDashboards('user')">房源看板</a>
                   </el-dropdown-item>
@@ -101,12 +107,28 @@
 
   nav {
     margin-right: 60px;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
     > ul {
       display: flex;
+      li{
+        max-width: 200px;
+      }
+      .dropdown{
+        width: 100%;
+        overflow: hidden;
+      }
       > li:not(:last-of-type) {
         margin-right: 5px;
       }
       .nav-item {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+        max-width: 100%;
         color: #fff;
         font-size: 16px;
         padding: 6px 16px;
