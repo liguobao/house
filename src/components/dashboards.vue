@@ -1,8 +1,10 @@
 <template>
-  <div class="dashboards">
+  <div class="dashboards"
+       :class="{'is-mobile':isMobile}"
+  >
     <template v-if="!loading">
       <ul v-if="cities && cities.length">
-        <li v-for="item in cities" :key="item.id">
+        <li v-for="item in cities" :key="item.id" :class="{'is-mobile': isMobile}">
           <a target="_blank" :href="`https://www.woyaozufang.live/Home/HouseList?cityname=${item.cityName}`"
              :title="item.cityName" class="title highlight">{{item.cityName}}</a>
           <div class="source-wrap">
@@ -30,6 +32,19 @@
     </template>
   </div>
 </template>
+<style scoped lang="scss">
+  .is-mobile.dashboards{
+    .title{
+      font-size: 16px;
+    }
+    .source-wrap{
+      font-size: 12px;
+    }
+    li{
+      width: 50%;
+    }
+  }
+</style>
 <style lang="scss" scoped>
   @keyframes toUp {
     0% {
@@ -42,12 +57,14 @@
     }
   }
 
-  .el-icon-loading{
+  .el-icon-loading {
     color: #409EFF;
   }
+
   .dashboards {
     max-height: 720px;
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   ul {
@@ -63,7 +80,7 @@
   }
 
   @for $i from 1 to 600 {
-    li:nth-of-type(#{$i}) {
+    li:not(.is-mobile):nth-of-type(#{$i}) {
       animation: toUp 0.5s (0.05s*$i) ease-out both;
     }
   }
@@ -95,7 +112,8 @@
     props: {
       type: {
         default: 'all'
-      }
+      },
+      isMobile: {}
     },
     computed: {
       dataType() {
@@ -111,11 +129,11 @@
     methods: {
       async getData() {
         this.loading = true;
-        if(this.dataType === 'all') {
+        if (this.dataType === 'all') {
           const res = await this.$ajax.get('/houses/dashboard');
           const data = res.data;
           this.cities = data;
-        }else {
+        } else {
           const userId = this.$store.state.userInfo.id;
           const res = await this.$ajax.get(`/users/${userId}/collections/dashboard`);
           const data = res.data;

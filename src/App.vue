@@ -64,6 +64,15 @@
   ::-webkit-scrollbar-thumb:hover {
     background-color: #bbb;
   }
+  html,body{
+    width: 100%;
+  }
+  body{
+    overflow-x: hidden;
+  }
+  .el-dialog__wrapper{
+    -webkit-overflow-scrolling: touch;
+  }
 </style>
 
 

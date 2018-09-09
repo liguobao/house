@@ -59,7 +59,7 @@
         try {
           await this.$refs.form.validate();
           this.loading = true;
-          const data = await this.$ajax.post(`/houses/douban`,{
+          await this.$ajax.post(`/houses/douban`,{
             ...this.form
           });
           this.$message.success('添加成功');

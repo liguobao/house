@@ -1,8 +1,11 @@
 <template>
-  <div class="header">
+  <div class="header"
+       :class="{'is-mobile':isMobile}"
+  >
     <div>
       <router-link to="/" class="title">房子是租来的,而生活不是。</router-link>
-      <nav>
+
+      <nav v-if="!isMobile">
         <ul>
           <li>
             <router-link class="nav-item" to="/">网站首页</router-link>
@@ -27,10 +30,13 @@
             </span>
               <el-dropdown-menu slot="dropdown">
                 <template v-if="user">
-                  <el-dropdown-item><a href="javascript:" class="link-to" @click="showDashboards('user')">房源看板</a></el-dropdown-item>
-                  <el-dropdown-item><a href="javascript:" class="link-to" @click="getUserHouseList">收藏列表</a></el-dropdown-item>
+                  <el-dropdown-item><a href="javascript:" class="link-to" @click="showDashboards('user')">房源看板</a>
+                  </el-dropdown-item>
+                  <el-dropdown-item><a href="javascript:" class="link-to" @click="getUserHouseList">收藏列表</a>
+                  </el-dropdown-item>
                   <el-dropdown-item disabled><a href="javascript:" class="link-to">绑定QQ</a></el-dropdown-item>
-                  <el-dropdown-item><a href="javascript:" class="link-to" @click="setAddress">设置地址</a></el-dropdown-item>
+                  <el-dropdown-item><a href="javascript:" class="link-to" @click="setAddress">设置地址</a>
+                  </el-dropdown-item>
                   <el-dropdown-item><a href="javascript:" class="link-to" @click="logOut">退出登录</a></el-dropdown-item>
                 </template>
                 <template v-else>
@@ -52,7 +58,8 @@
                 <el-dropdown-item v-for="item in instructions" :key="item.url">
                   <a :href="item.url" target="_blank" class="link-to">{{item.name}}</a>
                 </el-dropdown-item>
-                <el-dropdown-item><a href="javascript:" class="link-to" @click="scrollTo('contact')">联系我？</a></el-dropdown-item>
+                <el-dropdown-item><a href="javascript:" class="link-to" @click="scrollTo('contact')">联系我？</a>
+                </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </li>
@@ -62,6 +69,24 @@
   </div>
 </template>
 <style lang="scss" scoped>
+  .is-mobile.header {
+    background: #1a1f2a;
+    .title {
+      font-size: 16px;
+    }
+    >div{
+      width: auto !important;
+    }
+  }
+  .more{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #909399;
+    right: 5px;
+  }
+</style>
+<style lang="scss" scoped>
   .header {
     padding: 0 22px;
     > div {
@@ -70,6 +95,7 @@
       align-items: flex-end;
       width: 1200px;
       margin: auto;
+      position: relative;
     }
   }
 
@@ -135,7 +161,8 @@
       toggleDialog: {},
       getUserHouseList: {},
       showDashboards: {},
-      scrollTo: {}
+      scrollTo: {},
+      isMobile: {}
     },
     computed: {
       user() {
@@ -152,7 +179,7 @@
           cancelButtonText: '取消',
           inputValidator: /\S/,
           inputErrorMessage: '不能为空'
-        }).then(async ({ value }) => {
+        }).then(async ({value}) => {
           const userId = this.$store.state.userInfo.id;
           await this.$ajax.post(`/users/${userId}/address`, {
             address: value

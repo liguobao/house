@@ -2,13 +2,13 @@
   <el-dialog
       title="高级搜索功能"
       :visible.sync="visible"
-      width="550px"
+      :width="isMobile ? '100%' : '550px'"
       center
       :before-close="close"
   >
     <el-dialog
         top="50px"
-        width="70%"
+        :width="isMobile ? '100%' : '70%'"
         title="房源"
         :visible.sync="searchRes"
         append-to-body
@@ -16,8 +16,8 @@
     >
       <house-search-list type="all" :house-list="houseList"></house-search-list>
     </el-dialog>
-    <el-form ref="form" :model="form" label-width="130px" class="form" :rules="rules">
-      <el-form-item label="地区" prop="cityName">
+    <el-form ref="form" :model="form" :label-width="isMobile ? '0px' : '130px'" class="form" :rules="rules">
+      <el-form-item  :label="isMobile ? '' : '地区'" prop="cityName">
         <el-select v-model="form.cityName" placeholder="请选择地区" style="width: 100%" filterable allow-create>
           <!--<el-option label="全部" value=""></el-option>-->
           <el-option
@@ -28,7 +28,7 @@
           ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="价位" prop="price">
+      <el-form-item  :label="isMobile ? '' : '价位'" prop="price">
         <el-col :span="11">
           <el-input v-model="form.fromPrice" placeholder="最低价" :maxlength="8"></el-input>
         </el-col>
@@ -37,7 +37,7 @@
           <el-input v-model="form.toPrice" placeholder="最高价" :maxlength="8"></el-input>
         </el-col>
       </el-form-item>
-      <el-form-item label="房源">
+      <el-form-item  :label="isMobile ? '' : '房源'">
         <el-select v-model="form.source" placeholder="请选择房源" style="width: 100%" filterable>
           <el-option label="全部" value=""></el-option>
           <el-option
@@ -49,14 +49,14 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="时限(天数)" prop="intervalDay">
+      <el-form-item  :label="isMobile ? '' : '时限(天数)'" prop="intervalDay">
         <el-input v-model="form.intervalDay" placeholder="几天内的数据？默认十天" :maxlength="8"></el-input>
       </el-form-item>
-      <el-form-item label="关键词">
+      <el-form-item :label="isMobile ? '' : '关键词'">
         <el-input v-model="form.keyword" placeholder="搜索关键字" :maxlength="50"></el-input>
       </el-form-item>
-      <el-form-item label="数据展示方式" prop="type">
-        <el-select v-model="form.type" placeholder="请选择数据展示方式" style="width: 100%" >
+      <el-form-item :label="isMobile ? '' : '数据展示方式'" prop="type">
+        <el-select v-model="form.type" placeholder="请选择数据展示方式" style="width: 100%">
           <el-option
               label="列表"
               value="0"
@@ -86,7 +86,8 @@
   .form {
     text-align: center;
   }
-  .search{
+
+  .search {
     margin-top: 10px;
   }
 </style>
@@ -101,7 +102,8 @@
     props: {
       visible: {
         default: true
-      }
+      },
+      isMobile: {}
     },
     data() {
       return {
@@ -119,7 +121,7 @@
 
             if (this.form.fromPrice || this.form.toPrice) {
               const re = /^[0-9]+.?[0-9]*$/;
-              if ( this.form.fromPrice && (!re.test(this.form.fromPrice)) || (this.form.toPrice && !re.test(this.form.toPrice))) {
+              if (this.form.fromPrice && (!re.test(this.form.fromPrice)) || (this.form.toPrice && !re.test(this.form.toPrice))) {
                 callback(new Error())
               } else {
                 callback()
@@ -176,18 +178,18 @@
     },
     methods: {
       close() {
-        this.$emit('close', 'searchVisible',false)
+        this.$emit('close', 'searchVisible', false)
       },
       async search() {
         try {
           await this.$refs.form.validate();
-          const parmas = Object.assign({},this.form);
+          const parmas = Object.assign({}, this.form);
           delete parmas.type;
-          if(this.form.type == 1) {
+          if (this.form.type == 1) {
             parmas.cityname = parmas.cityName;
             delete parmas.cityName;
             window.open(`https://www.woyaozufang.live/Home/HouseList?${this.$qs.stringify(parmas)}`);
-          }else {
+          } else {
             this.loading = true;
             const data = await this.$ajax.post('/houses', {
               ...parmas

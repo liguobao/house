@@ -1,8 +1,10 @@
 <template>
   <div class="home"
+       :class="{'is-mobile': isMobile}"
        v-loading.fullscreen.lock="fullscreenLoading"
   >
     <Header
+        :is-mobile="isMobile"
         class="header"
         ref="header" :class="{sticky: sticky}"
         :toggle-dialog="toggleDialog"
@@ -122,22 +124,22 @@
       </div>
     </footer>
 
-    <search-dialog :visible="searchVisible" @close="toggleDialog"></search-dialog>
+    <search-dialog :is-mobile="isMobile" :visible="searchVisible" @close="toggleDialog"></search-dialog>
 
     <el-dialog
         :title="userSource ? '房源列表' : '全部城市'"
-        width="70%"
+        :width="isMobile ? '100%' : '70%'"
         center
-        top="50px"
+        :top="isMobile ? '0px' : '50px'"
         :visible="dashboardsVisible"
         :before-close="() => {toggleDialog('dashboardsVisible')}"
     >
-      <dashboards :type="dashboardsType" :key="dashboardsType"></dashboards>
+      <dashboards :type="dashboardsType" :key="dashboardsType" :is-mobile="isMobile"></dashboards>
     </el-dialog>
 
     <el-dialog
         title="新增豆瓣租房小组"
-        width="500px"
+        :width="isMobile ? '100%' : '500px'"
         center
         :visible="doubanAddVisible"
         :before-close="() => {toggleDialog('doubanAddVisible')}"
@@ -147,7 +149,7 @@
 
     <el-dialog
         title="地图搜租房"
-        width="700px"
+        :width="isMobile ? '100%' : '700px'"
         center
         :visible="loginVisible"
         :before-close="() => {toggleDialog('loginVisible')}"
@@ -157,7 +159,7 @@
 
     <el-dialog
         top="50px"
-        width="70%"
+        :width="isMobile ? '100%' : '70%'"
         title="房源列表"
         :visible.sync="userHouseVisible"
         append-to-body
@@ -170,6 +172,47 @@
 
   </div>
 </template>
+<style lang="scss" scoped>
+  .is-mobile.home{
+    min-height: auto !important;
+    .banner{
+      height: 200px;
+      background-size: 100% auto;
+      .slogan{
+        font-size: 16px;
+        text-align: center;
+        padding: 0 10px;
+      }
+      .sub-slogan{
+        font-size: 12px;
+        text-align: center;
+        padding: 0 10px;
+      }
+      .start{
+        font-size: 12px;
+        padding: 6px 10px;
+      }
+    }
+    .header{
+      padding-left: 10px;
+      padding-right: 10px;
+      position: sticky;
+      top: 0;
+    }
+    footer{
+      padding-left: 20px;
+      padding-right: 20px;
+      text-align: center;
+      >div{
+        align-items: center;
+        flex-direction: column;
+      }
+      a{
+        display: block;
+      }
+    }
+  }
+</style>
 <style lang="scss" scoped>
   @keyframes right2left {
     0% {
@@ -311,9 +354,11 @@
     }
     .cities {
       display: flex;
+      flex-wrap: wrap;
       margin-bottom: 32px;
       .city-item {
         flex: auto;
+        min-width: 180px;
         &.search {
           width: 184px;
         }
@@ -343,6 +388,7 @@
 
   .thanks {
     background: #fff;
+    padding: 20px;
     &.running {
       h3 {
         animation: toUp 0.5s ease-out both;
@@ -409,7 +455,7 @@
   }
 
   .contact {
-    padding: 40px 0 140px 0;
+    padding: 40px 20px 140px 20px;
     background: #1a1f2a;
     color: #fff;
     &.running {
@@ -435,8 +481,9 @@
       .ways {
         display: flex;
         align-items: baseline;
+        flex-wrap: wrap;
         > div:not(:last-of-type) {
-          margin-right: 200px;
+          margin-right: 15%;
         }
         span, em {
           font-weight: normal;
@@ -600,7 +647,8 @@
         userHouseList: [],
         userHouseVisible: false,
         userSource: false,
-        dashboardsType: 'all'
+        dashboardsType: 'all',
+        isMobile: false
       }
     },
     methods: {
@@ -641,6 +689,9 @@
         this[key] = val || false;
       },
       scroll() {
+        if(this.isMobile) {
+          return
+        }
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
         let offsetTop = this.$refs.header.$el.offsetTop;
         this.sticky = scrollTop > (offsetTop);
@@ -663,7 +714,9 @@
           if (centerY > visibleTop && centerY < visibleBottom) {
             this.elements[i].classList.add('running');
           } else {
-            this.elements[i].classList.remove('running');
+            if(!this.isMobile) {
+              this.elements[i].classList.remove('running');
+            }
           }
         }
 
@@ -671,6 +724,14 @@
     },
     async created() {
       this.getUserInfo();
+      let ua = navigator.userAgent;
+      let ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
+        isIphone =!ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
+        isAndroid = ua.match(/(Android)\s+([\d.]+)/),
+        isMobile = isIphone || isAndroid;
+      if(isMobile) {
+        this.isMobile = true
+      }
     },
     async mounted() {
       document.addEventListener('scroll', () => {
