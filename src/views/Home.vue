@@ -103,7 +103,7 @@
         <div>
           Copyright 2016 - 2018 www.woyaozufang.live. All Rights Reserved
           <a href="http://www.miitbeian.gov.cn/" class="highlight-name" target="_blank">粤ICP备18055424号</a>
-          <a href="https://www.woyaozufang.live/" class="highlight-name" target="_blank">地图搜租房</a>
+          <a href="/" class="highlight-name" >地图搜租房</a>
         </div>
         <div class="call-me">
           <el-tooltip class="item" effect="dark" content="88888888" placement="top">
@@ -137,7 +137,7 @@
 
     <el-dialog
         title="新增豆瓣租房小组"
-        width="400px"
+        width="500px"
         center
         :visible="doubanAddVisible"
         :before-close="() => {toggleDialog('doubanAddVisible')}"
@@ -162,9 +162,10 @@
         :visible.sync="userHouseVisible"
         append-to-body
         center
+        key="user"
         :before-close="() => {toggleDialog('userHouseVisible')}"
     >
-      <house-search-list type="user" @close="toggleDialog" :house-list="userHouseList"></house-search-list>
+      <house-search-list type="user" @close="toggleDialog" :house-list="userHouseList" ></house-search-list>
     </el-dialog>
 
   </div>
@@ -483,20 +484,20 @@
 <script>
   import Header from './../components/header';
   import SearchDialog from '../components/search-dialog';
-  import dashboards from './../components/dashboards';
-  import doubanAdd from './../components/douban-add';
-  import login from './../components/login'
-  import houseSearchList from './../components/house-search-list'
+  import Dashboards from './../components/dashboards';
+  import DoubanAdd from './../components/douban-add';
+  import Login from './../components/login'
+  import HouseSearchList from './../components/house-search-list'
 
   export default {
     name: 'home',
     components: {
       Header,
       SearchDialog,
-      dashboards,
-      doubanAdd,
-      login,
-      houseSearchList
+      Dashboards,
+      DoubanAdd,
+      Login,
+      HouseSearchList
     },
     computed: {
       fullscreenLoading() {

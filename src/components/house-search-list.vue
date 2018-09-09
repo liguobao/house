@@ -154,6 +154,13 @@
         }
       }
     },
+    watch:{
+      houseList(n) {
+        if(n) {
+          this.list = this.houseList
+        }
+      }
+    },
     data() {
       return {
         imagesLoadingMap: {},
@@ -165,10 +172,14 @@
       async del(row,index) {
         this.loading = true;
         const userId = this.$store.state.userInfo.id;
-        await this.$ajax.delete(`/users/${userId}/collections/${row.id}`);
+        const data = await this.$ajax.delete(`/users/${userId}/collections/${row.id}`);
         this.list.splice(index,1);
         this.loading = false;
+        this.$message.success(data.message ? data.message : '删除成功')
       }
+    },
+    destroyed() {
+      console.log(this.list)
     }
   }
 </script>

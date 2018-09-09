@@ -1,5 +1,9 @@
 <template>
   <div>
+    <div class="tips">
+      <span>厦门租房: </span>
+      <a href="https://www.douban.com/group/XMhouse/" target="_blank" class="highlight-name">www.douban.com/group/XMhouse</a>
+    </div>
     <el-form ref="form" :model="form" label-width="0px" class="form" :rules="rules">
       <el-form-item label="" prop="cityName">
         <el-input v-model="form.cityName" placeholder="（如：厦门）"></el-input>
@@ -18,6 +22,20 @@
 <style lang="scss" scoped>
   .btn-wrap {
     margin-top: 15px
+  }
+  .tips{
+    margin-bottom: 20px;
+    font-size: 18px;
+    span{
+
+    }
+  }
+  .highlight-name {
+    color: #0e90d2;
+    transition: all 0.3s;
+    &:hover {
+      color: #095f8a;
+    }
   }
 </style>
 <script>
