@@ -175,6 +175,7 @@
 </template>
 <style lang="scss" scoped>
   .is-mobile.home{
+    min-width: auto !important;
     min-height: auto !important;
     .banner{
       height: 200px;
@@ -262,6 +263,8 @@
   .home {
     min-height: 120vh;
     position: relative;
+    min-width: 1200px;
+    overflow: auto;
   }
 
   .header {

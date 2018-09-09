@@ -5,6 +5,9 @@
         border
         v-loading="loading"
         max-height="800"
+        :row-key="rowKey"
+        :expand-row-keys="rowKeyArr"
+        @cell-click="cellClick"
         style="width: 100%">
       <el-table-column
           type="expand"
@@ -20,8 +23,9 @@
                     <i v-show="!imagesLoadingMap[item]" class="el-icon-loading loading-icon"></i>
                   </transition>
                   <transition name="el-fade-in">
-                    <a target="_blank" v-show="imagesLoadingMap[item]" :href="item" title="查看原图"><img :src="item"
-                                                                                                      @load="imageLoading(item,imagesLoadingMap)"/></a>
+                    <a target="_blank" :style="{'background-image': `url(${item})`}" v-show="imagesLoadingMap[item]"
+                       :href="item" title="查看原图"><img :src="item"
+                                                      @load="imageLoading(item,imagesLoadingMap)"/></a>
                   </transition>
                 </div>
               </el-carousel-item>
@@ -73,7 +77,7 @@
           align="center"
           width="150"
           prop="housePrice"
-          label="价格">
+          label="价格(元)">
       </el-table-column>
       <el-table-column
           align="center"
@@ -124,9 +128,12 @@
         width: 100%;
         height: 100%;
         text-align: center;
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
       }
       img {
-        display: block;
+        display: none;
         max-width: 100%;
         margin: auto;
       }
@@ -166,10 +173,27 @@
       return {
         imagesLoadingMap: {},
         loading: false,
-        list: this.houseList
+        list: this.houseList,
+        rowKeyArr: [`9199258-zuber`]
       }
     },
     methods: {
+      cellClick(row, column, cell) {
+        if (cell.cellIndex !== 2) {
+          const id = ((row.id + '-') + row.source);
+          const index = this.rowKeyArr.findIndex(item => {
+            return item === id
+          });
+          if (index >= 0) {
+            this.rowKeyArr.splice(index, 1)
+          } else {
+            this.rowKeyArr.push(id);
+          }
+        }
+      },
+      rowKey(row) {
+        return (row.id + '-') + row.source
+      },
       async del(row, index) {
         this.loading = true;
         const userId = this.$store.state.userInfo.id;
@@ -180,7 +204,6 @@
       }
     },
     destroyed() {
-      console.log(this.list)
     }
   }
 </script>

@@ -10,7 +10,7 @@
       <br>
       房子是租来的,而生活不是。
     </div>
-    <el-form ref="form" :model="form" label-width="50px" :rules="rules">
+    <el-form ref="form" :model="form" label-width="100px" :rules="rules">
       <el-collapse-transition>
         <div v-if="type === 'login'">
           <el-form-item label="账号" prop="userName">
