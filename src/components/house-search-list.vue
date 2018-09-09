@@ -204,7 +204,6 @@
       }
     },
     destroyed() {
-      console.log(this.list)
     }
   }
 </script>
