@@ -103,6 +103,15 @@
         </template>
       </el-table-column>
     </el-table>
+    <div class="pagination text-right" v-if="type === 'all' && !loading">
+      <el-pagination
+          @current-change="currentChange"
+          :current-page="currentPage"
+          :page-size="100"
+          layout="prev, pager, next"
+          :total="2000">
+      </el-pagination>
+    </div>
   </div>
 </template>
 <style scoped lang="scss">
@@ -148,6 +157,9 @@
 
     }
   }
+  .pagination{
+    margin-top: 20px;
+  }
 </style>
 <script>
   export default {
@@ -155,12 +167,14 @@
       type: {
         default: 'all'
       },
+      options: {},
       token: {},
       houseList: {
         default: () => {
           return []
         }
-      }
+      },
+      getHousesList: {}
     },
     watch: {
       houseList(n) {
@@ -174,10 +188,24 @@
         imagesLoadingMap: {},
         loading: false,
         list: this.houseList,
-        rowKeyArr: [`9199258-zuber`]
+        rowKeyArr: [],
+        currentPage: 1
       }
     },
     methods: {
+      reset() {
+        this.currentPage = 1;
+        this.rowKeyArr = [];
+      },
+      async currentChange(page) {
+        this.loading = true;
+        await this.getHousesList({
+          ...this.options,
+          page
+        },'change');
+        this.loading = false;
+        this.currentPage = page;
+      },
       cellClick(row, column, cell) {
         if (cell.cellIndex !== 2) {
           const id = ((row.id + '-') + row.source);
@@ -203,7 +231,8 @@
         this.$message.success(data.message ? data.message : '删除成功')
       }
     },
-    destroyed() {
+    created() {
+
     }
   }
 </script>
