@@ -17,7 +17,8 @@
             </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item v-for="item in cities" :key="item">
-                  <a :href="`https://www.woyaozufang.live/Home/HouseList?cityname=${item}&token=${token}`" target="_blank"
+                  <a :href="`https://www.woyaozufang.live/Home/HouseList?cityname=${item}&token=${token}`"
+                     target="_blank"
                      class="link-to">{{item}}</a>
                 </el-dropdown-item>
               </el-dropdown-menu>
@@ -34,7 +35,7 @@
               </template>
               <i class="el-icon-caret-bottom"></i>
             </span>
-              <el-dropdown-menu slot="dropdown" >
+              <el-dropdown-menu slot="dropdown">
                 <template v-if="user">
                   <el-dropdown-item><a href="javascript:" class="link-to" @click="showDashboards('user')">房源看板</a>
                   </el-dropdown-item>
@@ -46,7 +47,8 @@
                   <el-dropdown-item><a href="javascript:" class="link-to" @click="logOut">退出登录</a></el-dropdown-item>
                 </template>
                 <template v-else>
-                  <el-dropdown-item disabled><a href="javascript:" class="link-to">QQ登录</a></el-dropdown-item>
+                  <el-dropdown-item ><a :href="oauthUrl ? oauthUrl : 'javascript:'" class="link-to">QQ登录</a>
+                  </el-dropdown-item>
                   <el-dropdown-item><a href="javascript:" class="link-to"
                                        @click="toggleDialog('loginVisible',true,'login')">邮箱登录</a></el-dropdown-item>
                   <el-dropdown-item><a href="javascript:" class="link-to"
@@ -80,11 +82,12 @@
     .title {
       font-size: 16px;
     }
-    >div{
+    > div {
       width: auto !important;
     }
   }
-  .more{
+
+  .more {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -113,10 +116,10 @@
     transform: translateY(-50%);
     > ul {
       display: flex;
-      li{
+      li {
         max-width: 200px;
       }
-      .dropdown{
+      .dropdown {
         width: 100%;
         overflow: hidden;
       }
@@ -229,8 +232,13 @@
             name: '更新日志',
             url: 'https://github.com/liguobao/58HouseSearch/blob/master/%E6%97%A5%E5%B8%B8%E6%9B%B4%E6%96%B0.md'
           }
-        ]
+        ],
+        oauthUrl: undefined
       }
+    },
+    async created() {
+      const data = await this.$ajax.get('/account/oauth-url');
+      this.oauthUrl = data.url
     }
   }
 </script>

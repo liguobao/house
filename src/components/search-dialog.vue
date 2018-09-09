@@ -184,17 +184,17 @@
       async search() {
         try {
           await this.$refs.form.validate();
-          const parmas = Object.assign({}, this.form);
-          delete parmas.type;
+          const params = Object.assign({}, this.form);
+          delete params.type;
           if (this.form.type == 1) {
-            parmas.cityname = parmas.cityName;
-            parmas.token = this.token;
-            delete parmas.cityName;
-            window.open(`https://www.woyaozufang.live/Home/HouseList?${this.$qs.stringify(parmas)}`);
+            params.cityname = params.cityName;
+            params.token = this.token;
+            delete params.cityName;
+            window.open(`https://www.woyaozufang.live/Home/HouseList?${this.$qs.stringify(params)}`);
           } else {
             this.loading = true;
             const data = await this.$ajax.post('/houses', {
-              ...parmas
+              ...params
             });
             this.loading = false;
             this.houseList = data.data;
