@@ -14,7 +14,7 @@
         append-to-body
         center
     >
-      <house-search-list type="all" :house-list="houseList"></house-search-list>
+      <house-search-list type="all" :house-list="houseList" :options="form" :get-houses-list="getHousesList"></house-search-list>
     </el-dialog>
     <el-form ref="form" :model="form" :label-width="isMobile ? '0px' : '130px'" class="form" :rules="rules">
       <el-form-item  :label="isMobile ? '' : '地区'" prop="cityName">
@@ -112,7 +112,7 @@
           cityName: '上海',
           intervalDay: 14,
           source: '',
-          type: '0'
+          type: '0',
         },
         searchRes: false,
         loading: false,
@@ -192,16 +192,29 @@
             delete params.cityName;
             window.open(`https://www.woyaozufang.live/Home/HouseList?${this.$qs.stringify(params)}`);
           } else {
-            this.loading = true;
-            const data = await this.$ajax.post('/houses', {
-              ...params
-            });
-            this.loading = false;
-            this.houseList = data.data;
-            this.searchRes = true;
+           this.getHousesList(params)
           }
         } catch (e) {
           this.loading = false;
+        }
+      },
+      async getHousesList(options,type) {
+        const params = Object.assign({
+          houseCount: 100,
+          page:1
+        }, options);
+        if(!type) {
+          this.loading = true;
+        }
+        const data = await this.$ajax.post('/houses', {
+          ...params
+        });
+        if(!type) {
+          this.loading = false;
+          this.houseList = data.data;
+          this.searchRes = true;
+        }else {
+          this.houseList = data.data;
         }
       },
       async getCities() {
