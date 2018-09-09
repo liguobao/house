@@ -11,6 +11,7 @@
         :get-user-house-list="getUserHouseList"
         :show-dashboards="showDashboards"
         :scroll-to="scrollTo"
+        :token="token"
     >
 
     </Header>
@@ -28,9 +29,9 @@
         </p>
         <div class="cities">
           <div class="city-item" v-for="item in cities" :key="item.name">
-            <a target="_blank" :href="mapUrl + `?cityname=${item.cityname}`" class="highlight-name">{{item.name}}</a>
+            <a target="_blank" :href="mapUrl + `?cityname=${item.cityname}&token=${token}`" class="highlight-name">{{item.name}}</a>
             <div class="form" v-if="item.form && item.form.length">
-              <a target="_blank" :href="mapUrl + `?cityname=${item.cityname}&source=${where.source}`"
+              <a target="_blank" :href="mapUrl + `?cityname=${item.cityname}&source=${where.source}&token=${token}`"
                  class="highlight-name" v-for="(where,index) in item.form" :key="where.name">
                 {{where.name}}
                 <template v-if="index < item.form.length - 1">、</template>
@@ -40,13 +41,13 @@
           <div class="city-item">
             <a target="_blank" href="javascript:;" class="highlight-name" @click="showDashboards('all')">更多城市</a>
             <div class="form">
-              <a target="_blank" :href="mapUrl + `?cityname=成都`" class="highlight-name">
+              <a target="_blank" :href="mapUrl + `?cityname=成都&token=${token}`" class="highlight-name">
                 成都、
               </a>
-              <a target="_blank" :href="mapUrl + `?cityname=杭州`" class="highlight-name">
+              <a target="_blank" :href="mapUrl + `?cityname=杭州&token=${token}`" class="highlight-name">
                 杭州、
               </a>
-              <a target="_blank" :href="mapUrl + `?cityname=厦门`" class="highlight-name">
+              <a target="_blank" :href="mapUrl + `?cityname=厦门&token=${token}`" class="highlight-name">
                 厦门...
               </a>
             </div>
@@ -124,7 +125,7 @@
       </div>
     </footer>
 
-    <search-dialog :is-mobile="isMobile" :visible="searchVisible" @close="toggleDialog"></search-dialog>
+    <search-dialog :token="token" :is-mobile="isMobile" :visible="searchVisible" @close="toggleDialog"></search-dialog>
 
     <el-dialog
         :title="userSource ? '房源列表' : '全部城市'"
@@ -134,7 +135,7 @@
         :visible="dashboardsVisible"
         :before-close="() => {toggleDialog('dashboardsVisible')}"
     >
-      <dashboards :type="dashboardsType" :key="dashboardsType" :is-mobile="isMobile"></dashboards>
+      <dashboards :type="dashboardsType" :key="dashboardsType" :is-mobile="isMobile" :token="token"></dashboards>
     </el-dialog>
 
     <el-dialog
@@ -167,7 +168,7 @@
         key="user"
         :before-close="() => {toggleDialog('userHouseVisible')}"
     >
-      <house-search-list type="user" @close="toggleDialog" :house-list="userHouseList" ></house-search-list>
+      <house-search-list type="user" @close="toggleDialog" :house-list="userHouseList" :token="token"></house-search-list>
     </el-dialog>
 
   </div>
@@ -549,6 +550,9 @@
     computed: {
       fullscreenLoading() {
         return this.$store.state.fullscreenLoading
+      },
+      token() {
+        return this.$store.state.token ? this.$store.state.token : ''
       }
     },
     data() {

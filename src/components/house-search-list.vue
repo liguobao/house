@@ -148,15 +148,16 @@
       type: {
         default: 'all'
       },
+      token: {},
       houseList: {
         default: () => {
           return []
         }
       }
     },
-    watch:{
+    watch: {
       houseList(n) {
-        if(n) {
+        if (n) {
           this.list = this.houseList
         }
       }
@@ -169,11 +170,11 @@
       }
     },
     methods: {
-      async del(row,index) {
+      async del(row, index) {
         this.loading = true;
         const userId = this.$store.state.userInfo.id;
         const data = await this.$ajax.delete(`/users/${userId}/collections/${row.id}`);
-        this.list.splice(index,1);
+        this.list.splice(index, 1);
         this.loading = false;
         this.$message.success(data.message ? data.message : '删除成功')
       }

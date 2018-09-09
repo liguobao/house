@@ -5,12 +5,12 @@
     <template v-if="!loading">
       <ul v-if="cities && cities.length">
         <li v-for="item in cities" :key="item.id" :class="{'is-mobile': isMobile}">
-          <a target="_blank" :href="`https://www.woyaozufang.live/Home/HouseList?cityname=${item.cityName}`"
+          <a target="_blank" :href="`https://www.woyaozufang.live/Home/HouseList?cityname=${item.cityName}&token=${token}`"
              :title="item.cityName" class="title highlight">{{item.cityName}}</a>
           <div class="source-wrap">
             <a target="_blank"
                :key="source.id"
-               :href="`https://www.woyaozufang.live/Home/HouseList?cityname=${item.cityName}&source=${source.source}&intervalDay=14&houseCount=600`"
+               :href="`https://www.woyaozufang.live/Home/HouseList?cityname=${item.cityName}&source=${source.source}&intervalDay=14&houseCount=600&token=${token}`"
                class="highlight" v-for="source in item.sources" :title="source.displaySource">
               {{source.displaySource}}
               <template v-if="source.houseSum < 9999">
@@ -113,7 +113,8 @@
       type: {
         default: 'all'
       },
-      isMobile: {}
+      isMobile: {},
+      token: {}
     },
     computed: {
       dataType() {

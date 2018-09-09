@@ -103,7 +103,8 @@
       visible: {
         default: true
       },
-      isMobile: {}
+      isMobile: {},
+      token: {}
     },
     data() {
       return {
@@ -187,6 +188,7 @@
           delete parmas.type;
           if (this.form.type == 1) {
             parmas.cityname = parmas.cityName;
+            parmas.token = this.token;
             delete parmas.cityName;
             window.open(`https://www.woyaozufang.live/Home/HouseList?${this.$qs.stringify(parmas)}`);
           } else {
